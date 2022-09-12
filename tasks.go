@@ -29,7 +29,7 @@ func (c *Client) GetAllTasks() (*[]TaskItem, error) {
 }
 
 // GetTask - Returns a specifc task
-func (c *Client) GetTask(taskID string) (*Task, error) {
+func (c *Client) GetTask(taskID string) (*TaskItem, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/%s/tasks/%s", c.HostURL, c.APIVersion, taskID), nil)
 	if err != nil {
 		return nil, err
@@ -46,7 +46,7 @@ func (c *Client) GetTask(taskID string) (*Task, error) {
 		return nil, err
 	}
 
-	return &task, nil
+	return &task.Task, nil
 }
 
 // CreateTask - Create new task
