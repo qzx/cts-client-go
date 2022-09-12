@@ -50,7 +50,7 @@ func (c *Client) GetTask(taskID string) (*TaskItem, error) {
 }
 
 // CreateTask - Create new task
-func (c *Client) CreateTask(newTask Task) (*TaskItem, error) {
+func (c *Client) CreateTask(newTask Task) (*TaskResponse, error) {
 	rb, err := json.Marshal(newTask)
 	if err != nil {
 		return nil, err
@@ -74,7 +74,7 @@ func (c *Client) CreateTask(newTask Task) (*TaskItem, error) {
 		return nil, err
 	}
 
-	return &task.Task, nil
+	return &task, nil
 }
 
 // Enable Task - Updates an task
