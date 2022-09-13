@@ -28,8 +28,8 @@ type TaskResponse struct {
 }
 
 type Condition struct {
-	ConsulKv *ConsulKv `json:"consul_kv"`
-	Services *Services `json:"services,omitempty"`
+	ConsulKv ConsulKv `json:"consul_kv,omitempty"`
+	Services Services `json:"services,omitempty"`
 }
 
 type ConsulKv struct {
