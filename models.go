@@ -28,12 +28,12 @@ type TaskResponse struct {
 }
 
 type Condition struct {
-	ConsulKv ConsulKv `json:"consul_kv,omitempty"`
-	Services Services `json:"services,omitempty"`
+	ConsulKv *ConsulKv `json:"consul_kv,omitempty"`
+	Services *Services `json:"services,omitempty"`
 }
 
 type ConsulKv struct {
-	Datacenter       string `json:"datacente,omitemptyr"`
+	Datacenter       string `json:"datacenter,omitemptyr"`
 	Namespace        string `json:"namespace,omitempty"`
 	Path             string `json:"path,omitempty"`
 	Recurse          bool   `json:"recurse,omitempty"`
@@ -41,12 +41,12 @@ type ConsulKv struct {
 }
 
 type Services struct {
-	CtsUserDefinedMeta CtsUserDefinedMeta `json:"cts_user_defined_meta,omitempty"`
-	Datacenter         string             `json:"datacenter,omitempty"`
-	Filter             string             `json:"filter,omitempty"`
-	Names              []string           `json:"names,omitempty"`
-	Namespace          string             `json:"namespace,omitempty"`
-	UseAsModuleInput   bool               `json:"use_as_module_input,omitempty"`
+	CtsUserDefinedMeta *CtsUserDefinedMeta `json:"cts_user_defined_meta,omitempty"`
+	Datacenter         string              `json:"datacenter,omitempty"`
+	Filter             string              `json:"filter,omitempty"`
+	Names              []string            `json:"names,omitempty"`
+	Namespace          string              `json:"namespace,omitempty"`
+	UseAsModuleInput   bool                `json:"use_as_module_input,omitempty"`
 }
 
 type CtsUserDefinedMeta struct{}

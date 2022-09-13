@@ -3,6 +3,7 @@ package cts
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -52,10 +53,13 @@ func (c *Client) GetTask(taskID string) (*TaskResponse, error) {
 
 // CreateTask - Create new task
 func (c *Client) CreateTask(newTask Task) (*TaskResponse, error) {
+	log.Printf("[DEBUG] marshaled create request is: %v\n", newTask)
+
 	rb, err := json.Marshal(newTask)
 	if err != nil {
 		return nil, err
 	}
+	log.Printf("[DEBUG] marshaled create request is: %v\n", string(rb))
 
 	req, err := http.NewRequest("POST", fmt.Sprintf("%s/%s/tasks", c.HostURL, c.APIVersion), strings.NewReader(string(rb)))
 	if err != nil {
