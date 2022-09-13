@@ -33,20 +33,20 @@ type Condition struct {
 }
 
 type ConsulKv struct {
-	Datacenter       string `json:"datacenter"`
-	Namespace        string `json:"namespace"`
-	Path             string `json:"path"`
-	Recurse          bool   `json:"recurse"`
-	UseAsModuleInput bool   `json:"use_as_module_input"`
+	Datacenter       string `json:"datacente,omitemptyr"`
+	Namespace        string `json:"namespace,omitempty"`
+	Path             string `json:"path,omitempty"`
+	Recurse          bool   `json:"recurse,omitempty"`
+	UseAsModuleInput bool   `json:"use_as_module_input,omitempty"`
 }
 
 type Services struct {
-	CtsUserDefinedMeta CtsUserDefinedMeta `json:"cts_user_defined_meta"`
-	Datacenter         string             `json:"datacenter"`
-	Filter             string             `json:"filter"`
-	Names              []string           `json:"names"`
-	Namespace          string             `json:"namespace"`
-	UseAsModuleInput   bool               `json:"use_as_module_input"`
+	CtsUserDefinedMeta CtsUserDefinedMeta `json:"cts_user_defined_meta,omitempty"`
+	Datacenter         string             `json:"datacenter,omitempty"`
+	Filter             string             `json:"filter,omitempty"`
+	Names              []string           `json:"names,omitempty"`
+	Namespace          string             `json:"namespace,omitempty"`
+	UseAsModuleInput   bool               `json:"use_as_module_input,omitempty"`
 }
 
 type CtsUserDefinedMeta struct{}
