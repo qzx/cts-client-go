@@ -41,7 +41,7 @@ type Services struct {
 	Filter             string              `json:"filter,omitempty"`
 	Regexp             string              `json:"regexp,omitempty"`
 	Names              []string            `json:"names,omitempty"`
-	UseAsModuleInput   bool                `json:"use_as_module_input,omitempty"`
+	UseAsModuleInput   *bool               `json:"use_as_module_input,omitempty"`
 }
 
 type CatalogServices struct {
