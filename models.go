@@ -71,7 +71,7 @@ type NodeMeta map[string]string
 
 type ModuleInput struct {
 	Services *Services `json:"services,omitempty"`
-	ConsulKv *ConsulKV `json:"consul_kv,omitempty"`
+	ConsulKv *ConsulKv `json:"consul_kv,omitempty"`
 }
 
 type Variables struct{}
