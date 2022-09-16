@@ -51,7 +51,7 @@ func NewClient(host, version *string) (*Client, error) {
 	return &c, nil
 }
 
-func (c *Client) doRequest(req *http.Request) ([]byte, error) {
+func (c *Client) doRequestWithCode(req *http.Request, acceptedCodes []int) ([]byte, error) {
 	res, err := c.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err
@@ -63,9 +63,29 @@ func (c *Client) doRequest(req *http.Request) ([]byte, error) {
 		return nil, err
 	}
 
-	if res.StatusCode != http.StatusOK && res.StatusCode != http.StatusCreated {
+	if acceptedCodes[res.StatusCode] {
 		return nil, fmt.Errorf("status: %d, body: %s", res.StatusCode, body)
 	}
 
 	return body, err
+}
+
+func (c *Client) doRequestOK(req *http.Request) ([]byte, error) {
+	return c.doRequestWithCode(req, []int{http.StatusOK})
+}
+
+func (c *Client) doRequestAccepted(req *http.Request) ([]byte, error) {
+	return c.doRequestWithCode(req, []int{http.StatusAccepted})
+}
+
+func (c *Client) doRequestCreated(req *http.Request) ([]byte, error) {
+	return c.doRequestWithCode(req, []int{http.StatusCreated})
+}
+
+func (c *Client) doRequest(req *http.Request) ([]byte, error) {
+	return c.doRequestWithCode(req, []int{
+		http.StatusOK,
+		http.StatusCreated,
+		http.StatusAccepted,
+	})
 }

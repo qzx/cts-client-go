@@ -15,7 +15,7 @@ func (c *Client) GetAllTasks() (*[]TaskItem, error) {
 		return nil, err
 	}
 
-	body, err := c.doRequest(req)
+	body, err := c.doRequestOK(req)
 	if err != nil {
 		return nil, err
 	}
@@ -36,7 +36,7 @@ func (c *Client) GetTask(taskID string) (*TaskResponse, error) {
 		return nil, err
 	}
 
-	body, err := c.doRequest(req)
+	body, err := c.doRequestOK(req)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +67,7 @@ func (c *Client) CreateTask(newTask Task) (*TaskResponse, error) {
 	}
 	req.Header.Set("Content-Type", "application/json")
 
-	body, err := c.doRequest(req)
+	body, err := c.doRequestCreated(req)
 	if err != nil {
 		return nil, err
 	}
@@ -93,7 +93,7 @@ func (c *Client) UpdateTaskEnable(taskID string, enable bool) (*UpdateResponse, 
 		return nil, err
 	}
 
-	body, err := c.doRequest(req)
+	body, err := c.doRequestOK(req)
 	if err != nil {
 		return nil, err
 	}
@@ -125,7 +125,7 @@ func (c *Client) DeleteTask(taskID string) error {
 		return err
 	}
 
-	body, err := c.doRequest(req)
+	body, err := c.doRequestAccepted(req)
 	if err != nil {
 		return err
 	}
