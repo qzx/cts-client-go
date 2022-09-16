@@ -63,7 +63,7 @@ func (c *Client) doRequestWithCode(req *http.Request, acceptedCodes []int) ([]by
 		return nil, err
 	}
 
-	if acceptedCodes[res.StatusCode] {
+	if _, ok := acceptedCodes[res.StatusCode]; ok {
 		return nil, fmt.Errorf("status: %d, body: %s", res.StatusCode, body)
 	}
 
