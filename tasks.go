@@ -3,7 +3,6 @@ package cts
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"strings"
 )
@@ -40,26 +39,22 @@ func (c *Client) GetTask(taskID string) (*TaskResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Printf("\v\n", body)
 	task := &TaskResponse{}
 	err = json.Unmarshal(body, task)
 	if err != nil {
 		return nil, err
 	}
-	fmt.Printf("\v\n", task)
 
 	return task, nil
 }
 
 // CreateTask - Create new task
 func (c *Client) CreateTask(newTask Task) (*TaskResponse, error) {
-	log.Printf("[DEBUG] marshaled create request is: %v\n", newTask)
 
 	rb, err := json.Marshal(newTask)
 	if err != nil {
 		return nil, err
 	}
-	log.Printf("[DEBUG] marshaled create request is: %v\n", string(rb))
 
 	req, err := http.NewRequest("POST", fmt.Sprintf("%s/%s/tasks", c.HostURL, c.APIVersion), strings.NewReader(string(rb)))
 	if err != nil {
@@ -82,13 +77,25 @@ func (c *Client) CreateTask(newTask Task) (*TaskResponse, error) {
 }
 
 // Enable Task - Updates an task
-func (c *Client) UpdateTaskEnable(taskID string, enable bool) (*UpdateResponse, error) {
-	rb, err := json.Marshal(fmt.Sprintf("{\"enabled\":%v}", enable))
+func (c *Client) UpdateTaskEnable(taskID string, enable bool) error {
+	patch := fmt.Sprintf("{\"enabled\":%v}", enable)
+
+	req, err := http.NewRequest("PATCH", fmt.Sprintf("%s/%s/tasks/%s", c.HostURL, c.APIVersion, taskID), strings.NewReader(patch))
 	if err != nil {
-		return nil, err
+		return err
+	}
+	_, err = c.doRequestOK(req)
+	if err != nil {
+		return err
 	}
 
-	req, err := http.NewRequest("PATCH", fmt.Sprintf("%s/%s/tasks/%s", c.HostURL, c.APIVersion, taskID), strings.NewReader(string(rb)))
+	return nil
+}
+
+func (c *Client) UpdateTaskEnableWithRun(taskID string, enable bool) (*UpdateWithRunResponse, error) {
+	patch := fmt.Sprintf("{\"enabled\":%v}", enable)
+
+	req, err := http.NewRequest("PATCH", fmt.Sprintf("%s/%s/tasks/%s", c.HostURL, c.APIVersion, taskID), strings.NewReader(patch))
 	if err != nil {
 		return nil, err
 	}
@@ -98,7 +105,7 @@ func (c *Client) UpdateTaskEnable(taskID string, enable bool) (*UpdateResponse, 
 		return nil, err
 	}
 
-	update := &UpdateResponse{}
+	update := &UpdateWithRunResponse{}
 
 	err = json.Unmarshal(body, update)
 	if err != nil {
@@ -108,9 +115,19 @@ func (c *Client) UpdateTaskEnable(taskID string, enable bool) (*UpdateResponse, 
 	return update, nil
 }
 
-func (c *Client) InspectTaskEnable(taskID string) (*bool, *string, error) {
+func (c *Client) TaskEnableInspect(taskID string, enable bool) (*bool, *string, error) {
 	taskIDWithInspect := fmt.Sprintf("%s?run=inspect", taskID)
-	update, err := c.UpdateTaskEnable(taskIDWithInspect, true)
+	update, err := c.UpdateTaskEnableWithRun(taskIDWithInspect, enable)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return &update.Inspect.ChangesPresent, &update.Inspect.Plan, nil
+}
+
+func (c *Client) TaskEnableNow(taskID string, enable bool) (*bool, *string, error) {
+	taskIDWithInspect := fmt.Sprintf("%s?run=now", taskID)
+	update, err := c.UpdateTaskEnableWithRun(taskIDWithInspect, enable)
 	if err != nil {
 		return nil, nil, err
 	}

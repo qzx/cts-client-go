@@ -74,9 +74,13 @@ type ModuleInput struct {
 	ConsulKv *ConsulKv `json:"consul_kv,omitempty"`
 }
 
+type EnableUpdate struct {
+	Enabled bool `json:"enabled,omitempty"`
+}
+
 type Variables struct{}
 
-type UpdateResponse struct {
+type UpdateWithRunResponse struct {
 	Inspect Inspect `json:"inspect"`
 }
 

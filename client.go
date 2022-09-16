@@ -63,13 +63,6 @@ func (c *Client) doRequestWithCode(req *http.Request, acceptedCodes []int) ([]by
 		return nil, err
 	}
 
-	var ok = false
-	for _, code := range acceptedCodes {
-		if res.StatusCode == code {
-			ok = true
-		}
-	}
-
 	if !statusInList(res.StatusCode, acceptedCodes) {
 		return nil, fmt.Errorf("status: %d, body: %s", res.StatusCode, body)
 	}
@@ -98,7 +91,7 @@ func (c *Client) doRequest(req *http.Request) ([]byte, error) {
 }
 
 func statusInList(c int, accepted []int) bool {
-	for _, a := range accpted {
+	for _, a := range accepted {
 		if c == a {
 			return true
 		}
