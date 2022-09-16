@@ -28,8 +28,29 @@ type TaskResponse struct {
 }
 
 type Condition struct {
-	ConsulKv *ConsulKv `json:"consul_kv,omitempty"`
-	Services *Services `json:"services,omitempty"`
+	Services        *Services        `json:"services,omitempty"`
+	CatalogServices *CatalogServices `json:"catalog_services,omitempty"`
+	ConsulKv        *ConsulKv        `json:"consul_kv,omitempty"`
+	Schedule        *Schedule        `json:"schedule,omitempty"`
+}
+
+type Services struct {
+	CtsUserDefinedMeta *CtsUserDefinedMeta `json:"cts_user_defined_meta,omitempty"`
+	Datacenter         string              `json:"datacenter,omitempty"`
+	Namespace          string              `json:"namespace,omitempty"`
+	Filter             string              `json:"filter,omitempty"`
+	Regexp             string              `json:"regexp,omitempty"`
+	Names              []string            `json:"names,omitempty"`
+	UseAsModuleInput   bool                `json:"use_as_module_input,omitempty"`
+}
+
+type CatalogServices struct {
+	CtsUserDefinedMeta *CtsUserDefinedMeta `json:"cts_user_defined_meta,omitempty"`
+	Datacenter         string              `json:"datacenter,omitempty"`
+	Namespace          string              `json:"namespace,omitempty"`
+	Regexp             string              `json:"regexp,omitempty"`
+	NodeMeta           *NodeMeta           `json:"node_meta,omitempty"`
+	UseAsModuleInput   *bool               `json:"use_as_module_input,omitempty"`
 }
 
 type ConsulKv struct {
@@ -37,21 +58,21 @@ type ConsulKv struct {
 	Namespace        string `json:"namespace,omitempty"`
 	Path             string `json:"path,omitempty"`
 	Recurse          bool   `json:"recurse,omitempty"`
-	UseAsModuleInput bool   `json:"use_as_module_input,omitempty"`
+	UseAsModuleInput *bool  `json:"use_as_module_input,omitempty"`
 }
 
-type Services struct {
-	CtsUserDefinedMeta *CtsUserDefinedMeta `json:"cts_user_defined_meta,omitempty"`
-	Datacenter         string              `json:"datacenter,omitempty"`
-	Filter             string              `json:"filter,omitempty"`
-	Names              []string            `json:"names,omitempty"`
-	Namespace          string              `json:"namespace,omitempty"`
-	UseAsModuleInput   bool                `json:"use_as_module_input,omitempty"`
+type Schedule struct {
+	Cron string `json:"cron,omitempty"`
 }
 
-type CtsUserDefinedMeta struct{}
+type CtsUserDefinedMeta map[string]string
 
-type ModuleInput struct{}
+type NodeMeta map[string]string
+
+type ModuleInput struct {
+	Services *Services `json:"services,omitempty"`
+	ConsulKv *ConsulKV `json:"consul_kv,omitempty"`
+}
 
 type Variables struct{}
 
